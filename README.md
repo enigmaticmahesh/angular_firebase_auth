@@ -1,6 +1,18 @@
-# AngularBarberApp
+# Firebase Auth App in Angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.9.
+
+- Firebase V9
+- Angular V13
+- Angular Fire V7
+
+### Functionalities
+
+- Email and Password Sign in and Sign up
+- Restricted routes if user is not logged in
+- Sign out functionality
+- Custom validator for a Form control
+- Custom loader component w/o any library
 
 ## Development server
 
