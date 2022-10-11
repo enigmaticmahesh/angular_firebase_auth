@@ -13,6 +13,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Sign out functionality
 - Custom validator for a Form control
 - Custom loader component w/o any library
+- Google Sign in implemented
 
 ## Development server
 

@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from "@angular/router";
 import { AppService } from "src/app/app.service";
+import firebase from 'firebase/compat/app';
 
 @Component({
     selector: 'app-login',
@@ -12,11 +13,12 @@ import { AppService } from "src/app/app.service";
 export class LoginComponent {
     loginForm: FormGroup
     userRegistering: boolean = false
+    googleAuth: any
 
     constructor(private auth: AngularFireAuth, private router: Router, private appService: AppService) {
         this.loginForm = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.email]),
-            password: new FormControl('', [Validators.required])
+            password: new FormControl('', [Validators.required, Validators.minLength(6)])
         })
     }
 
@@ -29,7 +31,6 @@ export class LoginComponent {
         this.appService.startLoading()
         this.auth.signInWithEmailAndPassword(email, password)
         .then((loggedInData) => {
-            console.log({loggedInData})
             this.router.navigate(['/dashboard'])
         })
         .catch(err => console.log('Firebase login error: ', err))
@@ -68,5 +69,13 @@ export class LoginComponent {
             if (!confirmPassword) { return null }
             return this.loginForm.get('password')?.value === confirmPassword ? null : {passwordMismatch: true}
         }
+    }
+
+    loginWithGoogle() {
+        this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then(googleUser => {
+            this.router.navigate(['/dashboard'])
+        })
+        .catch(err => console.log('Google sign in error: ', err))
     }
 }
