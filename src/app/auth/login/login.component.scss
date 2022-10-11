@@ -1,0 +1,25 @@
+.login__section {
+    width: 540px;
+    margin: 0 auto;
+    padding: 1rem;
+
+    section {
+        text-align: center;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: .5rem 1rem;
+
+        &[type="submit"] {
+            display: inline-block;
+            width: fit-content;
+        }
+    }
+
+    strong {
+        cursor: pointer;
+    }
+}
