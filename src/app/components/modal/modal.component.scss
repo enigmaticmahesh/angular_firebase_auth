@@ -1,0 +1,31 @@
+.modal {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background-color: rgba(0,0,0,.5);
+}
+
+.modal__body {
+    min-width: 320px;
+    background-color: white;
+    padding: 2rem 1rem;
+    border-radius: 5px;
+    position: relative;
+}
+
+.modal__show {
+    display: grid;
+}
+
+.modal__hide {
+    display: none;
+}
+
+.close__btn {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
+}

@@ -1,5 +1,12 @@
 <section class="header__section">
-  <button role="button" (click)="signOut()" *ngIf="isUserLoggedIn">
+  <h2>Barber</h2>
+  <button
+    class="btn btn-outline-primary btn-round"
+    role="button"
+    (click)="signOut()"
+    *ngIf="isUserLoggedIn"
+  >
+    <i class="fa fa-sign-out"></i>
     Sign Out
   </button>
 </section>

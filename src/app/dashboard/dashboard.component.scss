@@ -1,0 +1,30 @@
+.user__card {
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.action__btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.add__user__section {
+    text-align: end;
+    padding-inline: 1rem;
+}
+
+.customer__form {
+    text-align: center;
+    input {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: .5rem 1rem;
+
+        &[type="submit"] {
+            display: inline-block;
+            width: fit-content;
+        }
+    }
+}

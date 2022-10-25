@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AngularFireModule } from '@angular/fire/compat'
+import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -11,6 +11,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ModalCompoent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     LoginComponent,
     DashboardComponent,
     HeaderComponent,
-    LoaderComponent
+    LoaderComponent,
+    ModalCompoent,
   ],
   imports: [
     BrowserModule,
@@ -26,12 +28,12 @@ import { LoaderComponent } from './components/loader/loader.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";

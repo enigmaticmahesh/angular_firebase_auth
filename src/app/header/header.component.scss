@@ -1,8 +1,5 @@
 .header__section {
-    text-align: right;
     padding: 0.5rem 1rem;
-
-    & button {
-        padding: 0.5rem 1rem;
-    }
+    display: flex;
+    justify-content: space-between;
 }

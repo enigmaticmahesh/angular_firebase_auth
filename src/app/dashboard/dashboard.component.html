@@ -1,0 +1,58 @@
+<section class="add__user__section">
+  <button class="btn btn-primary btn-lg" (click)="showModal()">
+    Book a Customer
+  </button>
+</section>
+<section>
+  <div *ngFor="let user of users" class="user__card">
+    <div class="card card-stats">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-12">
+            <div class="numbers">
+              <p class="card-title">{{ user.name }}</p>
+              <p class="card-category">{{ user.mobile }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <hr />
+        <div class="action__btns">
+          <button class="btn btn-danger" (click)="removeUser(user._id)">
+            Reject
+          </button>
+          <button class="btn btn-primary">Start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <app-modal [show]="openModal" (handleModal)="closeModal()">
+    <h2>Welcome To Modal</h2>
+    <section class="customer__form">
+      <form [formGroup]="customerForm" (ngSubmit)="addUser()">
+        <div>
+          <input
+            type="text"
+            placeholder="Enter the customer name"
+            formControlName="name"
+          />
+          <input
+            type="text"
+            placeholder="Enter the customer mobile number"
+            formControlName="mobile"
+          />
+        </div>
+        <div>
+          <input
+            type="submit"
+            value="Submit"
+            [disabled]="customerForm.invalid"
+          />
+        </div>
+      </form>
+    </section>
+  </app-modal>
+</section>
