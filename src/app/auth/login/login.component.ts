@@ -9,9 +9,13 @@ import {
 } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { AppService } from 'src/app/app.service';
 import firebase from 'firebase/compat/app';
 import { Notify } from 'notiflix';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+import { AppService } from 'src/app/app.service';
+import { User } from 'src/app/common/interfaces';
+import { COLLECTIONS } from 'src/app/common/firebaseUtils';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +23,23 @@ import { Notify } from 'notiflix';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  REGISTRATION_CONTROLS = [
+    {
+      controlName: 'confirmPassword',
+      validators: [Validators.required, this.confirmPasswordValidator()],
+      placeHolder: 'Confirm Password',
+    },
+    {
+      controlName: 'name',
+      validators: [Validators.required],
+      placeHolder: 'Your Full Name',
+    },
+    {
+      controlName: 'mobile',
+      validators: [Validators.required],
+      placeHolder: 'Your Mobile Number',
+    },
+  ];
   loginForm: FormGroup;
   userRegistering: boolean = false;
   googleAuth: any;
@@ -26,7 +47,8 @@ export class LoginComponent {
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
-    private appService: AppService
+    private appService: AppService,
+    private firestore: AngularFirestore
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('test@test.com', [
@@ -50,7 +72,9 @@ export class LoginComponent {
     this.auth
       .signInWithEmailAndPassword(email, password)
       .then((loggedInData) => {
-        Notify.success('Welcome to Dashboard');
+        Notify.success(
+          `Welcome to Dashboard ${loggedInData.user?.displayName}`
+        );
         this.router.navigate(['/dashboard']);
       })
       .catch((err) => {
@@ -70,8 +94,24 @@ export class LoginComponent {
     this.appService.startLoading();
     this.auth
       .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        console.log({ userCredential });
+      .then(async (userCredential) => {
+        const user = {
+          name: this.loginForm.get('name')?.value,
+          mobile: this.loginForm.get('mobile')?.value,
+        };
+
+        this.firestore
+          .collection<User>(COLLECTIONS.users)
+          .doc(userCredential.user!.uid)
+          .set(user);
+        try {
+          await userCredential.user?.updateProfile({ displayName: user.name });
+        } catch (error) {
+          Notify.failure('Error while updating your profile name');
+        }
+        Notify.success(
+          `Welcome to Dashboard ${userCredential.user?.displayName}`
+        );
         this.router.navigate(['/dashboard']);
       })
       .catch((err) => {
@@ -84,18 +124,19 @@ export class LoginComponent {
   isUserRegistering() {
     this.userRegistering = !this.userRegistering;
     if (this.userRegistering && !this.loginForm.contains('confirmPassword')) {
-      this.loginForm.addControl(
-        'confirmPassword',
-        new FormControl('', [
-          Validators.required,
-          this.confirmPasswordValidator(),
-        ])
-      );
+      this.REGISTRATION_CONTROLS.forEach((item) => {
+        this.loginForm.addControl(
+          item.controlName,
+          new FormControl('', item.validators)
+        );
+      });
       return;
     }
 
     if (!this.userRegistering && this.loginForm.contains('confirmPassword')) {
-      this.loginForm.removeControl('confirmPassword');
+      this.REGISTRATION_CONTROLS.forEach((item) => {
+        this.loginForm.removeControl(item.controlName);
+      });
       return;
     }
   }

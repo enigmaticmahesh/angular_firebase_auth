@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Notify } from 'notiflix';
 import { Observable } from 'rxjs';
-
-export interface User {
-  _id: string;
-  name: string;
-  mobile: string;
-}
+import { COLLECTIONS } from '../common/firebaseUtils';
+import { User } from '../common/interfaces';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private firestore: AngularFirestore) {
     this.users$ = this.firestore
-      .collection<User>('customer_bookings')
+      .collection<User>(COLLECTIONS.users)
       .valueChanges({ idField: '_id' });
 
     this.customerForm = new FormGroup({
@@ -35,7 +30,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.users$.subscribe({
       next: (data: Array<User>) => {
-        console.log({ data });
         this.users = data;
       },
       error: (err: any) => console.log({ err }),
@@ -48,16 +42,16 @@ export class DashboardComponent implements OnInit {
     }
 
     this.firestore
-      .collection<User>('customer_bookings')
+      .collection<User>(COLLECTIONS.users)
       .add(this.customerForm.value);
   }
 
-  removeUser(id: string) {
+  removeUser(id: any) {
     if (!id) {
       return;
     }
 
-    this.firestore.doc<User>(`customer_bookings/${id}`).delete();
+    this.firestore.doc<User>(`users/${id}`).delete();
   }
 
   showModal() {

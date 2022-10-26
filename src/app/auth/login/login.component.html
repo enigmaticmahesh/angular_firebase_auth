@@ -12,11 +12,13 @@
         />
         <input type="password" placeholder="test" formControlName="password" />
         <ng-container *ngIf="userRegistering">
-          <input
-            type="text"
-            placeholder="Confirm Password"
-            formControlName="confirmPassword"
-          />
+          <ng-container *ngFor="let inputControl of REGISTRATION_CONTROLS">
+            <input
+              type="text"
+              [placeholder]="inputControl.placeHolder"
+              [formControlName]="inputControl.controlName"
+            />
+          </ng-container>
         </ng-container>
       </div>
       <div>

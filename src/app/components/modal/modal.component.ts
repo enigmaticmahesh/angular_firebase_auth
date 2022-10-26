@@ -20,9 +20,7 @@ export class ModalCompoent {
   @Input() public show: boolean = false;
   @Output() public handleModal = new EventEmitter<boolean>();
 
-  constructor() {
-    console.log('Modal Component');
-  }
+  constructor() {}
 
   close() {
     this.handleModal.emit(false);
