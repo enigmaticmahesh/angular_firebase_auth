@@ -1,9 +1,9 @@
 <section class="header__section">
   <h2>Barber</h2>
-  <div *ngIf="isUserLoggedIn" class="user__actions">
+  <div *ngIf="auth.user | async as user" class="user__actions">
     <div class="user__data">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <div class="text-muted">{{ userDisplayName }}</div>
+      <div class="text-muted">{{ user.displayName }}</div>
     </div>
     <button
       class="btn btn-outline-primary btn-round"
