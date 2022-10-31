@@ -2,4 +2,14 @@
     padding: 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
+
+    & .user__actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        & .user__data {
+            text-align: center;
+        }
+    }
 }
