@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -16,6 +13,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AppService } from 'src/app/app.service';
 import { User } from 'src/app/common/interfaces';
 import { COLLECTIONS } from 'src/app/common/firebaseUtils';
+import { REGISTRATION_CONTROLS } from 'src/app/common/utils'
 
 @Component({
   selector: 'app-login',
@@ -23,26 +21,10 @@ import { COLLECTIONS } from 'src/app/common/firebaseUtils';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  REGISTRATION_CONTROLS = [
-    {
-      controlName: 'confirmPassword',
-      validators: [Validators.required, this.confirmPasswordValidator()],
-      placeHolder: 'Confirm Password',
-    },
-    {
-      controlName: 'name',
-      validators: [Validators.required],
-      placeHolder: 'Your Full Name',
-    },
-    {
-      controlName: 'mobile',
-      validators: [Validators.required],
-      placeHolder: 'Your Mobile Number',
-    },
-  ];
   loginForm: FormGroup;
   userRegistering: boolean = false;
   googleAuth: any;
+  registrationControls = REGISTRATION_CONTROLS
 
   constructor(
     private auth: AngularFireAuth,
@@ -50,6 +32,7 @@ export class LoginComponent {
     private appService: AppService,
     private firestore: AngularFirestore
   ) {
+    // Login Form
     this.loginForm = new FormGroup({
       email: new FormControl('test@test.com', [
         Validators.required,
@@ -124,7 +107,7 @@ export class LoginComponent {
   isUserRegistering() {
     this.userRegistering = !this.userRegistering;
     if (this.userRegistering && !this.loginForm.contains('confirmPassword')) {
-      this.REGISTRATION_CONTROLS.forEach((item) => {
+      REGISTRATION_CONTROLS.forEach((item) => {
         this.loginForm.addControl(
           item.controlName,
           new FormControl('', item.validators)
@@ -134,23 +117,11 @@ export class LoginComponent {
     }
 
     if (!this.userRegistering && this.loginForm.contains('confirmPassword')) {
-      this.REGISTRATION_CONTROLS.forEach((item) => {
+      REGISTRATION_CONTROLS.forEach((item) => {
         this.loginForm.removeControl(item.controlName);
       });
       return;
     }
-  }
-
-  confirmPasswordValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const confirmPassword = control.value;
-      if (!confirmPassword) {
-        return null;
-      }
-      return this.loginForm.get('password')?.value === confirmPassword
-        ? null
-        : { passwordMismatch: true };
-    };
   }
 
   loginWithGoogle() {

@@ -12,7 +12,7 @@
         />
         <input type="password" placeholder="test" formControlName="password" />
         <ng-container *ngIf="userRegistering">
-          <ng-container *ngFor="let inputControl of REGISTRATION_CONTROLS">
+          <ng-container *ngFor="let inputControl of registrationControls">
             <input
               type="text"
               [placeholder]="inputControl.placeHolder"
